@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AzureUpdateReader
 {
-    internal class RSSChanel
+    internal class RSSChannel
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -33,7 +33,7 @@ namespace AzureUpdateReader
             try
             {
                 //読み込んだ情報の保存先
-                RSSChanel rssChannel;
+                RSSChannel rssChannel;
                 List<RSSItem> rssItems;
                 //RSSフィードを読み込む
                 ReadRSSFeed(rssUri, out rssChannel, out rssItems);
@@ -51,7 +51,7 @@ namespace AzureUpdateReader
             }
         }
 
-        private static void ExportCSV(string exportCsvPath, RSSChanel rssChannel, List<RSSItem> rssItems)
+        private static void ExportCSV(string exportCsvPath, RSSChannel rssChannel, List<RSSItem> rssItems)
         {
             using (StreamWriter sw = new StreamWriter(exportCsvPath, false, Encoding.UTF8))
             {
@@ -66,14 +66,14 @@ namespace AzureUpdateReader
             }
         }
 
-        private static void ReadRSSFeed(string rssUri, out RSSChanel rssChannel, out List<RSSItem> rssItems)
+        private static void ReadRSSFeed(string rssUri, out RSSChannel rssChannel, out List<RSSItem> rssItems)
         {
             //RSS フィード読み込み
             XElement element = XElement.Load(rssUri);
             XElement channelElement = element.Element("channel");
 
             //RSS チャネル読み込み
-            rssChannel = new RSSChanel();
+            rssChannel = new RSSChannel();
             rssChannel.Title = channelElement.Element("title").Value;
             rssChannel.Description = channelElement.Element("description").Value;
             rssChannel.Link = channelElement.Element("link").Value;
@@ -95,7 +95,7 @@ namespace AzureUpdateReader
             }
         }
 
-        private static void Print_AllRSSItems(RSSChanel rssChannel, List<RSSItem> rssItems)
+        private static void Print_AllRSSItems(RSSChannel rssChannel, List<RSSItem> rssItems)
         {
             Console.WriteLine("====");
             Console.WriteLine("RSS Channel Info");
