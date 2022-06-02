@@ -51,6 +51,19 @@ namespace AzureUpdateReader
             }
         }
 
+        private static string ParsePubDate(string pubDate)
+        {
+            DateTime datetime;
+            if (DateTime.TryParse(pubDate, out datetime) == true)
+            {
+                return datetime.ToString("yyyy/MM/dd");
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         private static void ExportCSV(string exportCsvPath, RSSChannel rssChannel, List<RSSItem> rssItems)
         {
             using (StreamWriter sw = new StreamWriter(exportCsvPath, false, Encoding.UTF8))
@@ -61,7 +74,7 @@ namespace AzureUpdateReader
                 foreach (RSSItem rssItem in rssItems)
                 {
                     sw.WriteLine("\"" + rssItem.Title + "\",\"" + rssItem.Description + "\",\"" +
-                        rssItem.Link + "\",\"" + rssItem.PubDate + "\"");
+                        rssItem.Link + "\",\"" + ParsePubDate(rssItem.PubDate) + "\"");
                 }
             }
         }
