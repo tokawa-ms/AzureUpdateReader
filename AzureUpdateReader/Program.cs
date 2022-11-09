@@ -128,16 +128,30 @@ namespace AzureUpdateReader
             {
                 sw.WriteLine(rssChannel.Title);
                 sw.WriteLine();
-                sw.WriteLine("Title,Description,Original_Title,Original_Description,Link,PubDate");
+                if (region != null && resourceKey != null && endpoint != null && route != null)
+                {
+                    sw.WriteLine("Title,Description,Original_Title,Original_Description,Link,PubDate");
+                }
+                else
+                {
+                    sw.WriteLine("Title,Description,Link,PubDate");
+                }
+
                 foreach (RSSItem rssItem in rssItems)
                 {
-                    var jptitle = await TranslateTextRequest(resourceKey, endpoint, route, rssItem.Title);
-                    var jpdesc = await TranslateTextRequest(resourceKey, endpoint, route, rssItem.Description);
-                    sw.WriteLine("\"" + jptitle + "\",\"" + jpdesc + "\",\"" +
-                        rssItem.Title + "\",\"" + rssItem.Description + "\",\"" +
-                        rssItem.Link + "\",\"" + ParsePubDate(rssItem.PubDate) + "\"");
-                    //sw.WriteLine("\"" + rssItem.Title + "\",\"" + rssItem.Description + "\",\"" +
-                    //    rssItem.Link + "\",\"" + ParsePubDate(rssItem.PubDate) + "\"");
+                    if (region != null && resourceKey != null && endpoint != null && route != null)
+                    {
+                        var jptitle = await TranslateTextRequest(resourceKey, endpoint, route, rssItem.Title);
+                        var jpdesc = await TranslateTextRequest(resourceKey, endpoint, route, rssItem.Description);
+                        sw.WriteLine("\"" + jptitle + "\",\"" + jpdesc + "\",\"" +
+                            rssItem.Title + "\",\"" + rssItem.Description + "\",\"" +
+                            rssItem.Link + "\",\"" + ParsePubDate(rssItem.PubDate) + "\"");
+                    }
+                    else
+                    {
+                        sw.WriteLine("\"" + rssItem.Title + "\",\"" + rssItem.Description + "\",\"" +
+                            rssItem.Link + "\",\"" + ParsePubDate(rssItem.PubDate) + "\"");
+                    }
                 }
             }
         }
